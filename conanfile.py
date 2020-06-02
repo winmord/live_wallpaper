@@ -13,6 +13,8 @@ class LivewallpapersConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = {"shared": True}
     generators = "cmake"
+    build_requires = "openssl/1.1.1g", \
+	                 "poco/1.10.1"
 
     def source(self):
         self.run("git clone url")
@@ -31,7 +33,7 @@ class LivewallpapersConan(ConanFile):
 
     def package(self):
         self.copy("*.h", dst="include", src="live_wallpapers")
-        self.copy("*live_wallpapers.lib", dst="lib", keep_path=False)
+        self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
         self.copy("*.dylib", dst="lib", keep_path=False)
