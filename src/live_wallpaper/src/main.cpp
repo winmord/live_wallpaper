@@ -7,7 +7,7 @@ int main()
 	try
 	{
 		live_wallpaper::live_wallpaper lw;
-		lw.slide_show("D:/photos/road", 0);
+		lw.slide_show("D:/photos/daytime", 4);
 	}
 	catch (std::exception& ex)
 	{
