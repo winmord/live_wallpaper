@@ -1,1 +1,1 @@
-# live_wallpapers
+# live_wallpaper
