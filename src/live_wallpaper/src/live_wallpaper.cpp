@@ -137,29 +137,38 @@ namespace live_wallpaper
 		of.close();
 	}
 
-	void live_wallpaper::slide_show(std::string const& path, int const& frames_delay, int const& delay)
+	void live_wallpaper::slide_show(wallpaper const& wp)
 	{
-		std::list<std::string> photos{};
-		for (auto const& i : fs::directory_iterator(path))
+		while (true)
 		{
-			photos.push_back(i.path().string());
-		}
-
-		if (!photos.empty())
-		{
-			while (true)
+			for (auto const& i : wp.get_frames())
 			{
-				for (auto const& i : photos)
-				{
-					set_wallpaper(i, wallpaper_style::stretch);
-					std::this_thread::sleep_for(std::chrono::seconds(frames_delay));
-				}
-
-				std::this_thread::sleep_for(std::chrono::seconds(delay));
+				set_wallpaper(i, wallpaper_style::stretch);
+				std::this_thread::sleep_for(std::chrono::seconds(wp.get_frame_delay()));
 			}
-		}
 
-		logger_.log_warning("Empty slide show");
+			if(wp.get_duplication()) set_wallpaper(wp.get_frames().front(), wallpaper_style::stretch);
+			std::this_thread::sleep_for(std::chrono::seconds(wp.get_delay()));
+			
+			if (stop_slide_show_) return;
+		}		
+	}
+
+	void live_wallpaper::start_slide_show(wallpaper const& wp)
+	{
+		std::thread sh(&live_wallpaper::slide_show, this, wp);
+		sh.detach();
+		std::cout << sh.get_id() << std::endl;
+	}
+
+	void live_wallpaper::start()
+	{
+		stop_slide_show_ = false;
+	}
+
+	void live_wallpaper::stop()
+	{
+		stop_slide_show_ = true;
 	}
 
 	void live_wallpaper::https_get_image(std::string const& host, std::string const& path) const

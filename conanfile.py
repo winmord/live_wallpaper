@@ -14,7 +14,8 @@ class LiveWallpaperConan(ConanFile):
     generators = "cmake"
     build_requires = "openssl/1.1.1g", \
 	                 "poco/1.10.1", \
-                     "boost/1.70.0" 
+                     "boost/1.70.0", \
+                     "nlohmann_json/3.7.3"
 
     def source(self):
         self.run("git clone url")

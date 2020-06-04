@@ -1,5 +1,6 @@
 #pragma once
 #include "include/live_wallpaper/logger.hpp"
+#include "include/live_wallpaper/wallpaper.hpp"
 
 namespace live_wallpaper
 {
@@ -33,10 +34,16 @@ namespace live_wallpaper
 
 		void set_wallpaper(std::string const& path, wallpaper_style style = wallpaper_style::keepaspect);
 
-		void slide_show(std::string const& path = ".cache", int const& frames_delay = 0, int const& delay = 0);
+		void slide_show(wallpaper const& wp);
+
+		void start_slide_show(wallpaper const& wp);
+
+		void start();
+		void stop();
 
 	private:
 		bool wp_opts_set_{false};
+		bool stop_slide_show_{false};
 		static logger logger_;
 	};
 }
